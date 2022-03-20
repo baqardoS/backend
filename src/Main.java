@@ -1,4 +1,5 @@
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 
 public class Main {
     public static void main(String[] args){
@@ -10,6 +11,7 @@ public class Main {
         Zad6 zad6 = new Zad6();
         Zad7 zad7 = new Zad7();
         Zad8 zad8 = new Zad8();
+        Zad1_D zad1_d = new Zad1_D();
 
 //        zad1.printFile();
 //        zad2.writeFile();
@@ -29,12 +31,26 @@ public class Main {
 //        String json = zad7.convertUserToJSON(userObject);
 //        System.out.println(json);
 
-        String userJson = "{\"name\":\"John\",\"age\":21}";
-        User user = zad8.convertJSONtoUser(userJson);
-        System.out.println(user.getAge());
-        System.out.println(user.getName());
+//        String userJson = "{\"name\":\"John\",\"age\":21}";
+//        User user = zad8.convertJSONtoUser(userJson);
+//        System.out.println(user.getAge());
+//        System.out.println(user.getName());
+
+//        int[] array = {1,2,3,4,5,6,7,8,9};
+//        int[] resultArray = zad1_d.removeOtherElementsFrom(array);
+//        for (int element : resultArray) {
+//            System.out.println(element);
+//        }
+
+        LinkedList<Integer> list = new LinkedList<Integer>();
+        for (int i = 0; i < 20; i++) {
+            list.add(i);
+        }
+        LinkedList<Integer> resultList = zad1_d.removeOtherElementsFrom(list);
+        for (int element : resultList) {
+            System.out.println(element);
+        }
+
 
     }
 }
-
-
