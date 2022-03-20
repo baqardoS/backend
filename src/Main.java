@@ -1,5 +1,8 @@
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args){
@@ -36,20 +39,29 @@ public class Main {
 //        System.out.println(user.getAge());
 //        System.out.println(user.getName());
 
-//        int[] array = {1,2,3,4,5,6,7,8,9};
-//        int[] resultArray = zad1_d.removeOtherElementsFrom(array);
-//        for (int element : resultArray) {
-//            System.out.println(element);
-//        }
+        List<Integer> array = new ArrayList<Integer>();
+        System.out.println("ArrayList:");
+        for (int i = 1; i < 20; i++) {
+            array.add(i);
+        }
+        zad1_d.removeOtherElementsFrom(array);
+        for (int element : array) {
+            System.out.println(element);
+        }
 
-        LinkedList<Integer> list = new LinkedList<Integer>();
+        System.out.println("LinkedList:");
+        List<Integer> list = new LinkedList<Integer>();
         for (int i = 0; i < 20; i++) {
             list.add(i);
         }
-        LinkedList<Integer> resultList = zad1_d.removeOtherElementsFrom(list);
-        for (int element : resultList) {
+        zad1_d.removeOtherElementsFrom(list);
+        for (int element : list) {
             System.out.println(element);
         }
+
+//        int[] duplicateArray = {1,1,2,3,3,3,4,5,6,1,2,3,4,5,6,7,9};
+
+
 
 
     }
