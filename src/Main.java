@@ -1,8 +1,5 @@
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args){
@@ -15,6 +12,7 @@ public class Main {
         Zad7 zad7 = new Zad7();
         Zad8 zad8 = new Zad8();
         Zad1_D zad1_d = new Zad1_D();
+        Zad2_D zad2_d = new Zad2_D();
 
 //        zad1.printFile();
 //        zad2.writeFile();
@@ -39,30 +37,31 @@ public class Main {
 //        System.out.println(user.getAge());
 //        System.out.println(user.getName());
 
-        List<Integer> array = new ArrayList<Integer>();
-        System.out.println("ArrayList:");
-        for (int i = 1; i < 20; i++) {
-            array.add(i);
-        }
-        zad1_d.removeOtherElementsFrom(array);
-        for (int element : array) {
-            System.out.println(element);
-        }
+//        List<Integer> array = new ArrayList<Integer>();
+//        System.out.println("ArrayList:");
+//        for (int i = 1; i < 20; i++) {
+//            array.add(i);
+//        }
+//        zad1_d.removeOtherElementsFrom(array);
+//        for (int element : array) {
+//            System.out.println(element);
+//        }
+//
+//        System.out.println("LinkedList:");
+//        List<Integer> list = new LinkedList<Integer>();
+//        for (int i = 0; i < 20; i++) {
+//            list.add(i);
+//        }
+//        zad1_d.removeOtherElementsFrom(list);
+//        for (int element : list) {
+//            System.out.println(element);
+//        }
 
-        System.out.println("LinkedList:");
-        List<Integer> list = new LinkedList<Integer>();
-        for (int i = 0; i < 20; i++) {
-            list.add(i);
-        }
-        zad1_d.removeOtherElementsFrom(list);
-        for (int element : list) {
-            System.out.println(element);
-        }
+//        Integer[] duplicateArray = {1,1,2,3,3,3,4,5,6,1,2,3,4,5,6,7,9};
+//        Set<Integer> uniqueArray = zad2_d.removeDuplicates(duplicateArray);
+//        System.out.println("Result: " + uniqueArray);
 
-//        int[] duplicateArray = {1,1,2,3,3,3,4,5,6,1,2,3,4,5,6,7,9};
-
-
-
+        
 
     }
 }
