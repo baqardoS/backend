@@ -8,6 +8,8 @@ public class Main {
         Zad4 zad4 = new Zad4();
         Zad5 zad5 = new Zad5();
         Zad6 zad6 = new Zad6();
+        Zad7 zad7 = new Zad7();
+        Zad8 zad8 = new Zad8();
 
 //        zad1.printFile();
 //        zad2.writeFile();
@@ -21,7 +23,18 @@ public class Main {
 //        zad5.printLocalTime();
 //        zad5.printGlobalTime();
 
-        zad6.printFileWithLineNumbers();
+//        zad6.printFileWithLineNumbers();
+
+//        User userObject = new User("John", 22);
+//        String json = zad7.convertUserToJSON(userObject);
+//        System.out.println(json);
+
+        String userJson = "{\"name\":\"John\",\"age\":21}";
+        User user = zad8.convertJSONtoUser(userJson);
+        System.out.println(user.getAge());
+        System.out.println(user.getName());
 
     }
 }
+
+
