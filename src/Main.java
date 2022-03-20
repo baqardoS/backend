@@ -7,6 +7,7 @@ public class Main {
         Zad3 zad3 = new Zad3();
         Zad4 zad4 = new Zad4();
         Zad5 zad5 = new Zad5();
+        Zad6 zad6 = new Zad6();
 
 //        zad1.printFile();
 //        zad2.writeFile();
@@ -19,6 +20,8 @@ public class Main {
 
 //        zad5.printLocalTime();
 //        zad5.printGlobalTime();
+
+        zad6.printFileWithLineNumbers();
 
     }
 }
