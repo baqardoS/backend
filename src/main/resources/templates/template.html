@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+
+        /* Desktop first approach */
+
+        /* Default styles for Desktop */
+
+        div.header {
+            background: #adadff;
+            height: 50px;
+        }
+
+        div.container {
+            height: 200px;
+            display: flex;
+        }
+
+        div.menu {
+            background: #ff6b6b;
+            flex: 0 0 200px;
+        }
+
+        div.content {
+            background: orange;
+            flex: auto;
+        }
+
+        div.footer {
+            background: #7dd96d;
+            height: 50px;
+        }
+
+        /* Mobile styles for screen width <= 550px */
+
+        @media (max-width: 550px)
+        {
+            /* below styles overwrite desktop styles */
+
+            div.container {
+                background: orange;
+                height: auto;
+                display: block;
+            }
+
+            div.menu {
+                flex: none;
+                height: 50px;
+            }
+
+            div.content {
+                flex: none;
+                height: 300px;
+            }
+        }
+
+        .image{
+            width: 60px;
+            height: auto;
+        }
+
+      </style>
+    </head>
+    <body>
+        <div class="header">Header ...</div>
+            <div class="container">
+                <div class="menu">Menu ...</div>
+                <div class="content">
+                    <img class="image" src="face.png" />
+                    <img class="image" src="hamster.jpg" />
+                </div>
+            </div>
+        <div class="footer">Footer ...</div>
+    </body>
+</html>
