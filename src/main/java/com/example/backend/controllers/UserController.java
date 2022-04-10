@@ -2,7 +2,9 @@ package com.example.backend.controllers;
 
 import com.example.backend.ResponseEntity;
 import com.example.backend.UserEntity;
+import com.example.backend.services.UserService;
 import org.apache.catalina.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +21,9 @@ import java.util.stream.IntStream;
 @RestController
 @Validated
 public class UserController {
+    @Autowired
+    private UserService userService;
+
     private Map<Integer, UserEntity> users = new HashMap<Integer, UserEntity>();
     private Integer key = 9;
 
@@ -36,77 +41,49 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/api/users")
-
+    @GetMapping(value = "/api/users")
     @ResponseBody
-    public Object getUsers(
+    public ResponseEntity getUsers(
             @RequestParam(name = "page-number", defaultValue = "1") @Min(1) Integer pageNumber,
             @RequestParam(name = "page-size", defaultValue = "5") @Min(1) @Max(100) Integer pageSize
     ){
-        Integer pagesCount = (int) Math.ceil(users.size() / (double) pageSize);
-        Integer totalCount = users.size();
-
-        Integer lowerLimit = (pageNumber-1) * pageSize;
-        Integer upperLimit = pageNumber * pageSize > totalCount ? totalCount : pageNumber * pageSize;
-
-        List<UserEntity> list = new ArrayList<>(users.values());
-        List<UserEntity> resultUsers = list.subList(lowerLimit, upperLimit);
-
-        return new ResponseEntity(pageNumber, pagesCount, pageSize, totalCount, resultUsers);
+        return userService.getUsers(users, pageNumber, pageSize);
     }
 
-    @RequestMapping("/api/users/{id}")
+    @GetMapping("/api/users/{id}")
     @ResponseBody
-    public Object getUser(
+    public UserEntity getUser(
             @PathVariable Integer id
     ){
-        for(UserEntity user: users.values()){
-            if(user.getId() == id){
-                return user;
-            }
-        }
-
-        return null;
+        return userService.getUser(users, id);
     }
 
-    @RequestMapping(
+    @DeleteMapping(
             value = "/api/users/{id}/remove",
-            method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String deleteUser(
             @PathVariable Integer id
     ){
-        if(users.remove(id) != null) return "{\"result\": true}";
-
-        return "{\"result\": false}";
+        return userService.deleteUser(users, id);
     }
 
-    @RequestMapping(
+    @PostMapping(
             value = "/api/user/create",
-            method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public UserEntity createUser(@RequestBody UserEntity user){
-        key++;
-        user.setId(key);
-        users.put(key, new UserEntity(key, user.getName(), user.getEmail()));
-        return user;
+        return userService.createUser(users, user, key);
     }
 
-    @RequestMapping(
+    @PatchMapping(
             value = "/api/users/{id}/update",
-            method = RequestMethod.PATCH,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public UserEntity updateUser(@PathVariable Integer id, @RequestBody UserEntity requestUser){
-        UserEntity user = users.get(id);
-        user.setName(requestUser.getName());
-        user.setEmail(requestUser.getEmail());
-
-        return user;
+        return userService.updateUser(users, id, requestUser);
     }
 
 }
