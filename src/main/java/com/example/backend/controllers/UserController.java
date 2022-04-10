@@ -24,38 +24,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    private Map<Integer, UserEntity> users = new HashMap<Integer, UserEntity>();
-    private Integer key = 9;
-
-    @PostConstruct
-    public void UserController(){
-        users.put(1, new UserEntity(1, "Test 1", "test1@email.com"));
-        users.put(2, new UserEntity(2, "Test 2", "test2@email.com"));
-        users.put(3, new UserEntity(3, "Test 3", "test3@email.com"));
-        users.put(4, new UserEntity(4, "Test 4", "test4@email.com"));
-        users.put(5, new UserEntity(5, "Test 5", "test5@email.com"));
-        users.put(6, new UserEntity(6, "Test 6", "test6@email.com"));
-        users.put(7, new UserEntity(7, "Test 7", "test7@email.com"));
-        users.put(8, new UserEntity(8, "Test 8", "test8@email.com"));
-        users.put(9, new UserEntity(9, "Test 9", "test9@email.com"));
-    }
-
-
     @GetMapping(value = "/api/users")
     @ResponseBody
     public ResponseEntity getUsers(
             @RequestParam(name = "page-number", defaultValue = "1") @Min(1) Integer pageNumber,
             @RequestParam(name = "page-size", defaultValue = "5") @Min(1) @Max(100) Integer pageSize
     ){
-        return userService.getUsers(users, pageNumber, pageSize);
+        return userService.getUsers(pageNumber, pageSize);
     }
 
     @GetMapping("/api/users/{id}")
     @ResponseBody
     public UserEntity getUser(
-            @PathVariable Integer id
+            @PathVariable String id
     ){
-        return userService.getUser(users, id);
+        return userService.getUser(id);
     }
 
     @DeleteMapping(
@@ -63,9 +46,9 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String deleteUser(
-            @PathVariable Integer id
+            @PathVariable String id
     ){
-        return userService.deleteUser(users, id);
+        return userService.deleteUser(id);
     }
 
     @PostMapping(
@@ -74,7 +57,7 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public UserEntity createUser(@RequestBody UserEntity user){
-        return userService.createUser(users, user, key);
+        return userService.createUser(user);
     }
 
     @PatchMapping(
@@ -82,8 +65,8 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public UserEntity updateUser(@PathVariable Integer id, @RequestBody UserEntity requestUser){
-        return userService.updateUser(users, id, requestUser);
+    public UserEntity updateUser(@PathVariable String id, @RequestBody UserEntity requestUser){
+        return userService.updateUser(id, requestUser);
     }
 
 }

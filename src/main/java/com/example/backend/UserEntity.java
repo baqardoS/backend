@@ -1,21 +1,26 @@
 package com.example.backend;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserEntity {
-    private Integer id;
+    private String id;
     private String name;
     private String email;
 
-    public UserEntity(Integer id, String name, String email){
+    @JsonCreator
+    public UserEntity(@JsonProperty("id")String id, @JsonProperty("name")String name, @JsonProperty("email")String email){
         this.id = id;
         this.name = name;
         this.email = email;
     }
 
-    public Integer getId(){
+    public String getId(){
         return id;
     }
 
-    public void setId(Integer id){
+    public void setId(String id){
         this.id = id;
     }
 

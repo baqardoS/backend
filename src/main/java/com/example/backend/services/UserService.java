@@ -2,16 +2,50 @@ package com.example.backend.services;
 
 import com.example.backend.ResponseEntity;
 import com.example.backend.UserEntity;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.io.*;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Service
 public class UserService {
+    private Map<String, UserEntity> users = new HashMap<String, UserEntity>();
 
-    public ResponseEntity getUsers(Map<Integer, UserEntity> users, Integer pageNumber, Integer pageSize){
+    @PostConstruct
+    public void onCreate(){
+        String path = "data.json";
+        StringBuilder builder = new StringBuilder();
+
+        try(FileInputStream stream = new FileInputStream(path);
+            Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8)){
+
+            users = new ObjectMapper().readValue(reader, new TypeReference<Map<String, UserEntity>>() {});
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    @PreDestroy
+    private void onDestroy() {
+        try{
+            new ObjectMapper().writeValue(new File("data.json"), users);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public ResponseEntity getUsers(Integer pageNumber, Integer pageSize){
         Integer pagesCount = (int) Math.ceil(users.size() / (double) pageSize);
         Integer totalCount = users.size();
 
@@ -24,30 +58,25 @@ public class UserService {
         return new ResponseEntity(pageNumber, pagesCount, pageSize, totalCount, resultUsers);
     }
 
-    public UserEntity getUser(Map<Integer, UserEntity> users, Integer id){
-        for(UserEntity user: users.values()){
-            if(user.getId() == id){
-                return user;
-            }
-        }
-
-        return null;
+    public UserEntity getUser(String id){
+        UserEntity user = users.get(id);
+        return users.get(id);
     }
 
-    public String deleteUser(Map<Integer, UserEntity> users, Integer id){
+    public String deleteUser(String id){
         if(users.remove(id) != null) return "{\"result\": true}";
 
         return "{\"result\": false}";
     }
 
-    public UserEntity createUser(Map<Integer, UserEntity> users, UserEntity user, Integer key){
-        key++;
-        user.setId(key);
-        users.put(key, new UserEntity(key, user.getName(), user.getEmail()));
+    public UserEntity createUser(UserEntity user){
+        String uniqueID = UUID.randomUUID().toString();
+        user.setId(uniqueID);
+        users.put(uniqueID, new UserEntity(uniqueID, user.getName(), user.getEmail()));
         return user;
     }
 
-    public UserEntity updateUser(Map<Integer, UserEntity> users, Integer id, UserEntity requestUser){
+    public UserEntity updateUser(String id, UserEntity requestUser){
         UserEntity user = users.get(id);
         user.setName(requestUser.getName());
         user.setEmail(requestUser.getEmail());

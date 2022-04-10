@@ -1,0 +1,11 @@
+GET http://localhost:8080/api/users?page-number=1&page-size=5
+GET http://localhost:8080/api/users/ef41b003-5c6f-4d1e-ad7d-283472d278b8
+POST http://localhost:8080/api/user/create {
+                                           	"name": "Jan Kowalski 7",
+                                               "email": "jan.kowalski7@email.com"
+                                           }
+PATCH http://localhost:8080/api/users/c2da1bd7-9e0b-4245-838b-b671c9f60fc2/update {
+                                                                                  	"name": "Jan Kowalski 3",
+                                                                                      "email": "jan.kowalski.2@email.com"
+                                                                                  }
+DELETE http://localhost:8080/api/users/c2da1bd7-9e0b-4245-838b-b671c9f60fc2s/remove
