@@ -1,14 +1,14 @@
 package com.example.backend;
 
 public class UserEntity {
-    private String name;
     private Integer id;
-    private Integer age;
+    private String name;
+    private String email;
 
-    public UserEntity(Integer id, String name, Integer age){
+    public UserEntity(Integer id, String name, String email){
         this.id = id;
         this.name = name;
-        this.age = age;
+        this.email = email;
     }
 
     public Integer getId(){
@@ -19,12 +19,12 @@ public class UserEntity {
         this.id = id;
     }
 
-    public Integer getAge(){
-        return age;
+    public String getEmail(){
+        return email;
     }
 
-    public void setAge(Integer age){
-        this.age = age;
+    public void setEmail(String email){
+        this.email = email;
     }
 
     public String getName(){
