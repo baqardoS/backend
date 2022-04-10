@@ -1,11 +1,13 @@
 package com.example.backend.controllers;
 
-import com.example.backend.ResponseEntity;
+import com.example.backend.ResEntity;
 import com.example.backend.UserEntity;
 import com.example.backend.services.UserService;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +28,7 @@ public class UserController {
 
     @GetMapping(value = "/api/users")
     @ResponseBody
-    public ResponseEntity getUsers(
+    public ResEntity getUsers(
             @RequestParam(name = "page-number", defaultValue = "1") @Min(1) Integer pageNumber,
             @RequestParam(name = "page-size", defaultValue = "5") @Min(1) @Max(100) Integer pageSize
     ){
@@ -35,10 +37,18 @@ public class UserController {
 
     @GetMapping("/api/users/{id}")
     @ResponseBody
-    public UserEntity getUser(
+    public ResponseEntity<?> getUser(
             @PathVariable String id
     ){
-        return userService.getUser(id);
+        UserEntity user = userService.getUser(id);
+        if(user != null){
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(user);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @DeleteMapping(

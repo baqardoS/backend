@@ -1,12 +1,10 @@
 package com.example.backend.services;
 
-import com.example.backend.ResponseEntity;
+import com.example.backend.ResEntity;
 import com.example.backend.UserEntity;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -45,7 +43,7 @@ public class UserService {
         }
     }
 
-    public ResponseEntity getUsers(Integer pageNumber, Integer pageSize){
+    public ResEntity getUsers(Integer pageNumber, Integer pageSize){
         Integer pagesCount = (int) Math.ceil(users.size() / (double) pageSize);
         Integer totalCount = users.size();
 
@@ -55,11 +53,10 @@ public class UserService {
         List<UserEntity> list = new ArrayList<>(users.values());
         List<UserEntity> resultUsers = list.subList(lowerLimit, upperLimit);
 
-        return new ResponseEntity(pageNumber, pagesCount, pageSize, totalCount, resultUsers);
+        return new ResEntity(pageNumber, pagesCount, pageSize, totalCount, resultUsers);
     }
 
     public UserEntity getUser(String id){
-        UserEntity user = users.get(id);
         return users.get(id);
     }
 
