@@ -1,15 +1,26 @@
 const express = require('express');
 const fs = require('fs');
+const morgan = require('morgan');
 
 const app = express();
 
+//? Middleware
+app.use(morgan('dev'));
+
 app.use(express.json());
+
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
 
 const books = JSON.parse(fs.readFileSync(`${__dirname}/data.json`));
 
+//? Route handlers
 const getAllBooks = (req, res) => {
   res.status(200).json({
     status: 'success',
+    requestedAt: req.requestTime,
     results: books.length,
     data: { books },
   });
@@ -22,6 +33,7 @@ const getBook = (req, res) => {
   if (book)
     return res.status(200).json({
       status: 'success',
+      requestedAt: req.requestTime,
       data: { book },
     });
 
@@ -77,6 +89,7 @@ const deleteBook = (req, res) => {
   });
 };
 
+//? Routes
 app.route('/api/v1/books').get(getAllBooks).post(createBook);
 app
   .route('/api/v1/books/:id')
@@ -84,6 +97,7 @@ app
   .patch(updateBook)
   .delete(deleteBook);
 
+//? Start Server
 const port = 3000;
 app.listen(port, () => {
   console.log('App started');
