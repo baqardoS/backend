@@ -4,7 +4,7 @@
   "description": "- [ ] API for Users\r - [ ] API for Books\r - [ ] Register\r - [ ] Login\r - [ ] Reset and Change Password\r - [ ] Authorization for users and admins\r - [ ] Admin books management\r - [ ] Admin users management\r - [ ] Basic UI\r - [ ] Session support via JWT\r - [ ] Error Handling\r - [ ] Data Sanitization\r - [ ] Documentation\r - [ ] Sending Emails\r - [ ] Prepare Database\r - [ ] Production Version",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
