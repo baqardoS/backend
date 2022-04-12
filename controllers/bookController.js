@@ -1,6 +1,44 @@
+const express = require('express');
 const fs = require('fs');
 
 const books = JSON.parse(fs.readFileSync(`${__dirname}/../data.json`));
+
+exports.findBook = (req, res, next, val) => {
+  const book = books.find((el) => el.index === val);
+
+  if (!book)
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Book not found',
+    });
+
+  req.book = book;
+
+  next();
+};
+
+exports.checkBody = (req, res, next) => {
+  const bookProperties = [
+    'title',
+    'cover',
+    'description',
+    'category',
+    'author',
+    'publisher',
+    'language',
+    'pages',
+    'premiere_date',
+    'size',
+    'index',
+  ];
+
+  if (bookProperties.some((property) => !req.body[property]))
+    return res.status(400).json({
+      status: 'fail',
+      message: `Missing book data`,
+    });
+  next();
+};
 
 exports.getAllBooks = (req, res) => {
   res.status(200).json({
@@ -12,19 +50,12 @@ exports.getAllBooks = (req, res) => {
 };
 
 exports.getBook = (req, res) => {
-  const id = req.params.id;
-  const book = books.find((el) => el.index === id);
+  const book = req.book;
 
-  if (book)
-    return res.status(200).json({
-      status: 'success',
-      requestedAt: req.requestTime,
-      data: { book },
-    });
-
-  res.status(404).json({
-    status: 'fail',
-    message: 'Book not found',
+  return res.status(200).json({
+    status: 'success',
+    requestedAt: req.requestTime,
+    data: { book },
   });
 };
 
@@ -41,35 +72,19 @@ exports.createBook = (req, res) => {
 };
 
 exports.updateBook = (req, res) => {
-  const id = req.params.id;
+  const book = req.book;
 
-  const book = books.find((el) => el.index === id);
-
-  if (book)
-    res.status(200).json({
-      status: 'success',
-      data: { book: 'Updated book here' },
-    });
-
-  res.status(404).json({
-    status: 'fail',
-    message: 'Book not found',
+  res.status(200).json({
+    status: 'success',
+    data: { book: 'Updated book here' },
   });
 };
 
 exports.deleteBook = (req, res) => {
-  const id = req.params.id;
+  const book = req.book;
 
-  const book = books.find((el) => el.index === id);
-
-  if (book)
-    res.status(204).json({
-      status: 'success',
-      data: null,
-    });
-
-  res.status(404).json({
-    status: 'fail',
-    message: 'Book not found',
+  res.status(204).json({
+    status: 'success',
+    data: null,
   });
 };
