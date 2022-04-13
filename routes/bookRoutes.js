@@ -8,7 +8,7 @@ const {
   deleteBook,
   findBook,
   checkBody,
-} = require('./../controllers/bookController');
+} = require('../controllers/bookController');
 
 const router = express.Router();
 
