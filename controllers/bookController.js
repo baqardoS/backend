@@ -2,7 +2,21 @@ const Book = require('../models/bookModel');
 
 exports.getAllBooks = async (req, res) => {
   try {
-    const books = await Book.find();
+    const queryObj = { ...req.query };
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach((el) => delete queryObj[el]);
+    const containFields = ['title', 'description', 'author', 'publisher'];
+    containFields.forEach((el) => {
+      if (queryObj[el]) queryObj[el] = { $regex: queryObj[el], $options: 'i' };
+    });
+    console.log(queryObj);
+
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+
+    const query = Book.find(JSON.parse(queryStr));
+
+    const books = await query;
 
     res.status(200).json({
       status: 'success',

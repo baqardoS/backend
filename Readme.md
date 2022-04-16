@@ -5,17 +5,18 @@
 - [x] Prepare Database
 - [ ] REST API for Users
 - [ ] Filtering and searching books
-- [ ] REST API for Books
+- [ ] Pagination for books
+- [x] REST API for books
 - [ ] Register
 - [ ] Login
-- [ ] Reset and Change Password
+- [ ] Reset and change password
 - [ ] Authorization for users and admins
 - [ ] Admin books management
 - [ ] Admin users management
 - [ ] Basic UI
 - [ ] Session support via JWT
-- [ ] Sending Emails
-- [ ] Error Handling
-- [ ] Data Sanitization
-- [ ] Production Version
+- [ ] Sending emails
+- [ ] Error handling
+- [ ] Data sanitization
+- [ ] Production version
 - [ ] Documentation
