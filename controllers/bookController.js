@@ -9,12 +9,18 @@ exports.getAllBooks = async (req, res) => {
     containFields.forEach((el) => {
       if (queryObj[el]) queryObj[el] = { $regex: queryObj[el], $options: 'i' };
     });
-    console.log(queryObj);
 
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-    const query = Book.find(JSON.parse(queryStr));
+    let query = Book.find(JSON.parse(queryStr));
+
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' ');
+      query = query.sort(sortBy);
+    } else {
+      query = query.sort('-createdAt');
+    }
 
     const books = await query;
 

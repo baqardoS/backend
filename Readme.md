@@ -4,7 +4,7 @@
 
 - [x] Prepare Database
 - [ ] REST API for Users
-- [ ] Filtering and searching books
+- [x] Filtering, searching and sorting books,
 - [ ] Pagination for books
 - [x] REST API for books
 - [ ] Register
