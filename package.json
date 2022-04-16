@@ -1,10 +1,13 @@
 {
   "name": "book-view",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=8.3.0"
+  },
   "description": "- [ ] API for Users\r - [ ] API for Books\r - [ ] Register\r - [ ] Login\r - [ ] Reset and Change Password\r - [ ] Authorization for users and admins\r - [ ] Admin books management\r - [ ] Admin users management\r - [ ] Basic UI\r - [ ] Session support via JWT\r - [ ] Error Handling\r - [ ] Data Sanitization\r - [ ] Documentation\r - [ ] Sending Emails\r - [ ] Prepare Database\r - [ ] Production Version",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
+    "start": "nodemon server.js",
     "start:prod": "SET NODE_ENV=production & nodemon server.js"
   },
   "repository": {

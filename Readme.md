@@ -2,7 +2,7 @@
 
 ## Work Schedule
 
-- [ ] Prepare Database
+- [x] Prepare Database
 - [ ] REST API for Users
 - [ ] Filtering and searching books
 - [ ] REST API for Books
