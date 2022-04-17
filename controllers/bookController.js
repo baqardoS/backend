@@ -1,4 +1,5 @@
 const Book = require('../models/bookModel');
+const APIFeatures = require('../utils/apiFeatures');
 
 exports.alias5LongestBooks = (req, res, next) => {
   req.query.limit = '5';
@@ -18,53 +19,12 @@ exports.aliasNewThisYear = (req, res, next) => {
 
 exports.getAllBooks = async (req, res) => {
   try {
-    const queryObj = { ...req.query };
-
-    //? Exclude non field parameters
-    const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    excludedFields.forEach((el) => delete queryObj[el]);
-
-    //? Handle searching by checking if field contain value
-    const containFields = ['title', 'description', 'author', 'publisher'];
-    containFields.forEach((el) => {
-      if (queryObj[el]) queryObj[el] = { $regex: queryObj[el], $options: 'i' };
-    });
-
-    //? Handle comparison operators
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
-    let query = Book.find(JSON.parse(queryStr));
-
-    //? Handle sorting
-    if (req.query.sort) {
-      const sortBy = req.query.sort.split(',').join(' ');
-      query = query.sort(`${sortBy} _id`);
-    } else {
-      query = query.sort('-createdAt _id');
-    }
-
-    //? Handle fields limiting
-    if (req.query.fields) {
-      const fields = req.query.fields.split(',').join(' ');
-      query = query.select(fields);
-    } else {
-      query = query.select('-__v');
-    }
-
-    //? Handle pagination
-    const page = req.query.page * 1 || 1;
-    const limit = req.query.limit * 1 || 10;
-    const skip = (page - 1) * limit;
-    query = query.skip(skip).limit(limit);
-
-    //? Check if page exists
-    if (req.query.page) {
-      const numBooks = await Book.countDocuments();
-      if (skip >= numBooks) throw new Error('This page does not exist');
-    }
-
-    const books = await query;
+    const features = await new APIFeatures(Book.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+    const books = await features.query;
 
     res.status(200).json({
       status: 'success',
