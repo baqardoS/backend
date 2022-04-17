@@ -3,11 +3,12 @@
 ## Work Schedule
 
 - [x] Prepare Database
-- [ ] REST API for Users
 - [x] Filtering, searching and sorting books,
 - [x] Pagination for books
 - [x] REST API for books
 - [x] Aliases for frequent requested routes
+- [x] Stats for books
+- [ ] REST API for Users
 - [ ] Register
 - [ ] Login
 - [ ] Reset and change password

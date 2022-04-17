@@ -107,3 +107,32 @@ exports.deleteBook = async (req, res) => {
     });
   }
 };
+
+exports.getBooksStats = async (req, res) => {
+  try {
+    const stats = await Book.aggregate([
+      {
+        $match: { _id: { $exists: true } },
+      },
+      {
+        $group: {
+          _id: '$category',
+          booksQuantity: { $sum: 1 },
+          avgPages: { $avg: '$pages' },
+          minPages: { $min: '$pages' },
+          maxPages: { $max: '$pages' },
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      status: 'success',
+      data: stats,
+    });
+  } catch (error) {
+    res.status(404).json({
+      status: 'fail',
+      message: error,
+    });
+  }
+};
