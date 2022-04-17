@@ -3,23 +3,37 @@ const Book = require('../models/bookModel');
 exports.getAllBooks = async (req, res) => {
   try {
     const queryObj = { ...req.query };
+
+    //? Exclude non field parameters
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryObj[el]);
+
+    //? Handle searching by checking if field contain value
     const containFields = ['title', 'description', 'author', 'publisher'];
     containFields.forEach((el) => {
       if (queryObj[el]) queryObj[el] = { $regex: queryObj[el], $options: 'i' };
     });
 
+    //? Handle comparison operators
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
     let query = Book.find(JSON.parse(queryStr));
 
+    //? Handle sorting
     if (req.query.sort) {
       const sortBy = req.query.sort.split(',').join(' ');
       query = query.sort(sortBy);
     } else {
       query = query.sort('-createdAt');
+    }
+
+    //? Handle fields limiting
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join(' ');
+      query = query.select(fields);
+    } else {
+      query = query.select('-__v');
     }
 
     const books = await query;
