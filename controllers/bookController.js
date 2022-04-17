@@ -1,5 +1,21 @@
 const Book = require('../models/bookModel');
 
+exports.alias5LongestBooks = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = '-pages';
+  req.query.fields = 'title,cover,description,pages,category,author';
+
+  next();
+};
+
+exports.aliasNewThisYear = (req, res, next) => {
+  req.query.premiere_date = { gte: `${new Date().getFullYear()}` };
+  req.query.sort = '-premiere_date';
+  req.query.fields = 'title,cover,description,pages,category,author';
+
+  next();
+};
+
 exports.getAllBooks = async (req, res) => {
   try {
     const queryObj = { ...req.query };

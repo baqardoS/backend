@@ -5,8 +5,9 @@
 - [x] Prepare Database
 - [ ] REST API for Users
 - [x] Filtering, searching and sorting books,
-- [ ] Pagination for books
+- [x] Pagination for books
 - [x] REST API for books
+- [x] Aliases for frequent requested routes
 - [ ] Register
 - [ ] Login
 - [ ] Reset and change password
