@@ -6,6 +6,8 @@ const bookSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: [true, 'A book must have a title'],
+    maxlength: [100, 'A book title must be less or equal to 100 characters'],
+    minlength: [2, 'A book title must be more or equal to 2 characters'],
   },
   cover: {
     type: String,
@@ -16,10 +18,16 @@ const bookSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: [true, 'A book must have a description'],
+    minlength: [
+      20,
+      'A book description must be more or equal to 20 characters',
+    ],
   },
   category: {
     type: String,
     required: [true, 'A book must have a category'],
+    maxlength: [50, 'A book title must be less or equal to 50 characters'],
+    minlength: [2, 'A book title must be more or equal to 2 characters'],
   },
   author: {
     type: String,
@@ -28,10 +36,12 @@ const bookSchema = new mongoose.Schema({
   pages: {
     type: Number,
     required: [true, 'A book must have a number of pages'],
+    min: [20, 'Number of pages must be 20 or more'],
   },
   premiere_date: {
     type: Date,
     required: [true, 'A book must have a premiere date'],
+    max: [Date.now(), "Premiere date can't be in the future"],
   },
   index: {
     type: String,

@@ -20,5 +20,6 @@
 - [ ] Sending emails
 - [ ] Error handling
 - [ ] Data sanitization
+- [ ] Data validation
 - [ ] Production version
 - [ ] Documentation
