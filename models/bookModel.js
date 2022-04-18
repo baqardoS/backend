@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const bookSchema = new mongoose.Schema({
   title: {
@@ -45,6 +46,14 @@ const bookSchema = new mongoose.Schema({
   publisher: String,
   language: String,
   size: String,
+  slug: String,
+});
+
+//? Document middleware: runs before ONLY .save() and .create()
+bookSchema.pre('save', function (next) {
+  this.slug = slugify(`${this.title} ${this.index}`, { lower: true });
+
+  next();
 });
 
 const Book = mongoose.model('Book', bookSchema);
