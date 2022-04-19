@@ -1,5 +1,7 @@
 const Book = require('../models/bookModel');
 const APIFeatures = require('../utils/apiFeatures');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 
 exports.alias5LongestBooks = (req, res, next) => {
   req.query.limit = '5';
@@ -17,122 +19,86 @@ exports.aliasNewThisYear = (req, res, next) => {
   next();
 };
 
-exports.getAllBooks = async (req, res) => {
-  try {
-    const features = await new APIFeatures(Book.find(), req.query)
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
-    const books = await features.query;
+exports.getAllBooks = catchAsync(async (req, res) => {
+  const features = await new APIFeatures(Book.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+  const books = await features.query;
 
-    res.status(200).json({
-      status: 'success',
-      requestedAt: req.requestTime,
-      results: books.length,
-      data: { books },
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error,
-    });
-  }
-};
+  res.status(200).json({
+    status: 'success',
+    requestedAt: req.requestTime,
+    results: books.length,
+    data: { books },
+  });
+});
 
-exports.getBook = async (req, res) => {
-  try {
-    const book = await Book.findById(req.params.id);
+exports.getBook = catchAsync(async (req, res, next) => {
+  const book = await Book.findById(req.params.id);
 
-    return res.status(200).json({
-      status: 'success',
-      requestedAt: req.requestTime,
-      data: { book },
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error,
-    });
-  }
-};
+  if (!book) return next(new AppError('No book found with that ID', 404));
 
-exports.createBook = async (req, res) => {
-  try {
-    const newBook = await Book.create(req.body);
+  return res.status(200).json({
+    status: 'success',
+    requestedAt: req.requestTime,
+    data: { book },
+  });
+});
 
-    res.status(201).json({
-      status: 'success',
-      data: { book: newBook },
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error,
-    });
-  }
-};
+exports.createBook = catchAsync(async (req, res) => {
+  const newBook = await Book.create(req.body);
 
-exports.updateBook = async (req, res) => {
-  try {
-    const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+  res.status(201).json({
+    status: 'success',
+    data: { book: newBook },
+  });
+});
 
-    res.status(200).json({
-      status: 'success',
-      data: { book },
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error,
-    });
-  }
-};
+exports.updateBook = catchAsync(async (req, res, next) => {
+  const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
-exports.deleteBook = async (req, res) => {
-  try {
-    await Book.findByIdAndDelete(req.params.id);
+  if (!book) return next(new AppError('No book found with that ID', 404));
 
-    res.status(204).json({
-      status: 'success',
-      data: null,
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error,
-    });
-  }
-};
+  res.status(200).json({
+    status: 'success',
+    data: { book },
+  });
+});
 
-exports.getBooksStats = async (req, res) => {
-  try {
-    const stats = await Book.aggregate([
-      {
-        $match: { _id: { $exists: true } },
+exports.deleteBook = catchAsync(async (req, res, next) => {
+  const book = await Book.findByIdAndDelete(req.params.id);
+
+  if (!book) return next(new AppError('No book found with that ID', 404));
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
+
+exports.getBooksStats = catchAsync(async (req, res) => {
+  const stats = await Book.aggregate([
+    {
+      $match: { _id: { $exists: true } },
+    },
+    {
+      $group: {
+        _id: '$category',
+        booksQuantity: { $sum: 1 },
+        avgPages: { $avg: '$pages' },
+        minPages: { $min: '$pages' },
+        maxPages: { $max: '$pages' },
       },
-      {
-        $group: {
-          _id: '$category',
-          booksQuantity: { $sum: 1 },
-          avgPages: { $avg: '$pages' },
-          minPages: { $min: '$pages' },
-          maxPages: { $max: '$pages' },
-        },
-      },
-    ]);
+    },
+  ]);
 
-    res.status(200).json({
-      status: 'success',
-      data: stats,
-    });
-  } catch (error) {
-    res.status(404).json({
-      status: 'fail',
-      message: error,
-    });
-  }
-};
+  res.status(200).json({
+    status: 'success',
+    data: stats,
+  });
+});
