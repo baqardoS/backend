@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/baqardoS/backend#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.0",
     "eslint": "^8.13.0",
     "eslint-config-airbnb": "^19.0.4",
