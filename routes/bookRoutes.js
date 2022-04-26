@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { protect } = require('../controllers/authController');
+const { protect, restrictTo } = require('../controllers/authController');
 
 const {
   getAllBooks,
@@ -20,6 +20,10 @@ router.route('/top-5-longest').get(alias5LongestBooks, getAllBooks);
 router.route('/stats').get(getBooksStats);
 
 router.route('/').get(protect, getAllBooks).post(createBook);
-router.route('/:id').get(getBook).patch(updateBook).delete(deleteBook);
+router
+  .route('/:id')
+  .get(getBook)
+  .patch(updateBook)
+  .delete(protect, restrictTo('admin'), deleteBook);
 
 module.exports = router;

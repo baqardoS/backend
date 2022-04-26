@@ -12,13 +12,13 @@
 - [x] Register
 - [x] Login
 - [ ] Reset and change password
-- [ ] Authorization for users and admins
+- [ ] Authorization for users roles
 - [ ] Admin books management
 - [ ] Admin users management
 - [ ] Basic UI
 - [ ] Session support via JWT
 - [ ] JWT with cookie
-- [ ] Sending emails
+- [ ] Sending emails with token to change password
 - [ ] Error handling
 - [ ] Data sanitization
 - [ ] Data validation
