@@ -9,14 +9,15 @@
 - [x] Aliases for frequent requested routes
 - [x] Stats for books
 - [ ] REST API for Users
-- [ ] Register
-- [ ] Login
+- [x] Register
+- [x] Login
 - [ ] Reset and change password
 - [ ] Authorization for users and admins
 - [ ] Admin books management
 - [ ] Admin users management
 - [ ] Basic UI
 - [ ] Session support via JWT
+- [ ] JWT with cookie
 - [ ] Sending emails
 - [ ] Error handling
 - [ ] Data sanitization

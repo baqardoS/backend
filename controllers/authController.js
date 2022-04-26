@@ -45,3 +45,35 @@ exports.login = catchAsync(async (req, res, next) => {
     token,
   });
 });
+
+exports.protect = catchAsync(async (req, res, next) => {
+  //? Check if token exists
+  if (
+    !req.headers.authorization ||
+    !req.headers.authorization.startsWith('Bearer')
+  )
+    return next(
+      new AppError('You are not logged in! Please login to get access.', 401)
+    );
+
+  const token = req.headers.authorization.split(' ')[1];
+
+  //? Verify token
+  const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+
+  //? Check if user still exists
+  const user = await User.findById(decodedData.id);
+  if (!user)
+    return next(
+      new AppError('User associated with this token does no longer exist.', 401)
+    );
+
+  //? Check if user changed password after token was issued
+  if (user.changedPasswordAfter(decodedData.iat))
+    return next(
+      new AppError('User recently changed password! Please log in again.', 401)
+    );
+
+  req.user = user;
+  next();
+});
