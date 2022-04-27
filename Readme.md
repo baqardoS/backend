@@ -11,15 +11,15 @@
 - [ ] REST API for Users
 - [x] Register
 - [x] Login
-- [ ] Reset and change password
+- [x] Reset password
 - [ ] Authorization for users roles
 - [ ] Admin books management
 - [ ] Admin users management
 - [ ] Basic UI
-- [ ] Session support via JWT
+- [x] Session support via JWT
 - [ ] JWT with cookie
-- [ ] Sending emails with token to change password
-- [ ] Error handling
+- [x] Sending emails with token to change password
+- [x] Error handling
 - [ ] Data sanitization
 - [ ] Data validation
 - [ ] Production version
