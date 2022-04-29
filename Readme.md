@@ -12,12 +12,14 @@
 - [x] Register
 - [x] Login
 - [x] Reset password
+- [ ] Logout
+- [ ] Logged user data (Me page)
 - [ ] Authorization for users roles
 - [ ] Admin books management
 - [ ] Admin users management
 - [ ] Basic UI
 - [x] Session support via JWT
-- [ ] JWT with cookie
+- [x] JWT with cookie
 - [x] Sending emails with token to change password
 - [x] Error handling
 - [ ] Data sanitization
