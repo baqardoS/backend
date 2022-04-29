@@ -12,8 +12,8 @@
 - [x] Register
 - [x] Login
 - [x] Reset password
-- [ ] Logout
-- [ ] Logged user data (Me page)
+- [x] Logout
+- [x] Get logged user data (Me route)
 - [ ] Authorization for users roles
 - [ ] Admin books management
 - [ ] Admin users management

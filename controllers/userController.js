@@ -21,6 +21,15 @@ exports.getAllUsers = catchAsync(async (req, res) => {
   });
 });
 
+exports.getMe = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user._id).select('-_id name email');
+
+  res.status(200).json({
+    status: 'success',
+    data: { user },
+  });
+});
+
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
