@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
 const AppError = require('./utils/appError');
@@ -19,8 +20,13 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour!',
 });
 
+//? Secure HTTP headers
+app.use(helmet());
+//? Limit requests from same IP
 app.use('/api', limiter);
-app.use(express.json());
+//? Body parser
+app.use(express.json({ limit: '10kb' }));
+//? Cookie parser
 app.use(cookieParser());
 
 app.use((req, res, next) => {
@@ -29,7 +35,6 @@ app.use((req, res, next) => {
 });
 
 //? Routes
-
 app.use('/api/v1/books', bookRouter);
 app.use('/api/v1/users', userRouter);
 
