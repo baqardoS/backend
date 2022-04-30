@@ -15,14 +15,12 @@
 - [x] Logout
 - [x] Get logged user data (Me route)
 - [ ] Authorization for users roles
-- [ ] Admin books management
-- [ ] Admin users management
-- [ ] Basic UI
 - [x] Session support via JWT
 - [x] JWT with cookie
 - [x] Sending emails with token to change password
 - [x] Error handling
-- [ ] Data sanitization
+- [x] Data sanitization
+- [ ] Separate data of Categories, Languages, Authors and Publishers
 - [ ] Data validation
 - [ ] Production version
 - [ ] Documentation
