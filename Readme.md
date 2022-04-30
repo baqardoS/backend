@@ -8,7 +8,7 @@
 - [x] REST API for books
 - [x] Aliases for frequent requested routes
 - [x] Stats for books
-- [ ] REST API for Users
+- [x] REST API for Users
 - [x] Register
 - [x] Login
 - [x] Reset password

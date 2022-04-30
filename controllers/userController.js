@@ -21,6 +21,50 @@ exports.getAllUsers = catchAsync(async (req, res) => {
   });
 });
 
+exports.getUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) return next(new AppError('No user found with that ID', 404));
+
+  res.status(200).json({
+    status: 'success',
+    requestedAt: req.requestTime,
+    data: { user },
+  });
+});
+
+exports.createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not defined! Please use /signup instead',
+  });
+};
+
+exports.updateUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!user) return next(new AppError('No user found with that ID', 404));
+
+  res.status(200).json({
+    status: 'success',
+    data: { user },
+  });
+});
+
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.params.id);
+
+  if (!user) return next(new AppError('No user found with that ID', 404));
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
+
 exports.getMe = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user._id).select('-_id name email');
 
@@ -29,13 +73,6 @@ exports.getMe = catchAsync(async (req, res, next) => {
     data: { user },
   });
 });
-
-exports.createUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!',
-  });
-};
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm)
@@ -50,7 +87,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,
-  });
+  }).select('-_id name email');
 
   res.status(200).json({
     status: 'success',
@@ -66,24 +103,3 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
-
-exports.getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!',
-  });
-};
-
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!',
-  });
-};
-
-exports.deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!',
-  });
-};
