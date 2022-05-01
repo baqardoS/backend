@@ -1,4 +1,5 @@
 const Book = require('../models/bookModel');
+const Category = require('../models/categoryModel');
 const APIFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -48,6 +49,16 @@ exports.getBook = catchAsync(async (req, res, next) => {
 });
 
 exports.createBook = catchAsync(async (req, res) => {
+  const category = await Category.findOneAndUpdate(
+    { name: req.body.category },
+    { name: req.body.category },
+    {
+      new: true,
+      upsert: true,
+    }
+  );
+  req.body.category = category._id;
+
   const newBook = await Book.create(req.body);
 
   res.status(201).json({
@@ -57,6 +68,16 @@ exports.createBook = catchAsync(async (req, res) => {
 });
 
 exports.updateBook = catchAsync(async (req, res, next) => {
+  const category = await Category.findOneAndUpdate(
+    { name: req.body.category },
+    { name: req.body.category },
+    {
+      new: true,
+      upsert: true,
+    }
+  );
+  req.body.category = category._id;
+
   const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
