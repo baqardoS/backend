@@ -1,18 +1,48 @@
+const Category = require('../models/categoryModel');
+
 class APIFeatures {
   constructor(query, queryString) {
     this.query = query;
     this.queryString = queryString;
   }
 
+  async filterWithReference() {
+    const queryObj = { ...this.queryString };
+
+    const includedFields = ['author', 'publisher', 'category', 'language'];
+
+    Object.keys(queryObj).forEach(
+      (el) => !includedFields.includes(el) && delete queryObj[el]
+    );
+
+    if ('category' in queryObj) {
+      const category = await Category.findOne({ name: queryObj.category });
+      queryObj.category = category._id;
+    }
+
+    this.query = this.query.find(queryObj);
+
+    return this;
+  }
+
   filter() {
     const queryObj = { ...this.queryString };
 
     //? Exclude non field parameters
-    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    const excludedFields = [
+      'page',
+      'sort',
+      'limit',
+      'fields',
+      'author',
+      'publisher',
+      'category',
+      'language',
+    ];
     excludedFields.forEach((el) => delete queryObj[el]);
 
     //? Handle searching by checking if field contain value
-    const containFields = ['title', 'description', 'author', 'publisher'];
+    const containFields = ['title', 'description'];
     containFields.forEach((el) => {
       if (queryObj[el]) queryObj[el] = { $regex: queryObj[el], $options: 'i' };
     });

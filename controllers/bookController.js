@@ -21,11 +21,12 @@ exports.aliasNewThisYear = (req, res, next) => {
 };
 
 exports.getAllBooks = catchAsync(async (req, res) => {
-  const features = await new APIFeatures(Book.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
+  let features = await new APIFeatures(
+    Book.find(),
+    req.query
+  ).filterWithReference();
+  features = await features.filter().sort().limitFields().paginate();
+
   const books = await features.query;
 
   res.status(200).json({
