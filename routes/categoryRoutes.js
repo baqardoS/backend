@@ -1,4 +1,6 @@
 const express = require('express');
+const { protect, restrictTo } = require('../controllers/authController');
+
 const {
   createCategory,
   getAllCategories,
@@ -8,7 +10,13 @@ const {
 
 const router = express.Router();
 
-router.route('/').get(getAllCategories).post(createCategory);
-router.route('/:id').patch(updateCategory).delete(deleteCategory);
+router
+  .route('/')
+  .get(protect, getAllCategories)
+  .post(protect, restrictTo('admin'), createCategory);
+router
+  .route('/:id')
+  .patch(protect, restrictTo('admin'), updateCategory)
+  .delete(protect, restrictTo('admin'), deleteCategory);
 
 module.exports = router;

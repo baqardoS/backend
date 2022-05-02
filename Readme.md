@@ -14,13 +14,13 @@
 - [x] Reset password
 - [x] Logout
 - [x] Get logged user data (Me route)
-- [ ] Authorization for users roles
+- [x] Authorization for users roles
 - [x] Session support via JWT
 - [x] JWT with cookie
 - [x] Sending emails with token to change password
 - [x] Error handling
 - [x] Data sanitization
 - [x] Separate data of Categories, Languages, Authors and Publishers
-- [ ] Data validation
+- [x] Data validation
 - [ ] Production version
 - [ ] Documentation

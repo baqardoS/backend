@@ -27,7 +27,7 @@ exports.getAllBooks = factory.getAll(Book);
 exports.getBook = factory.getOne(Book);
 exports.deleteBook = factory.deleteOne(Book);
 
-exports.setPublisherAdminLanguageCategory = catchAsync(
+exports.setPublisherAuthorLanguageCategory = catchAsync(
   async (req, res, next) => {
     const category = await Category.findOneAndUpdate(
       { name: req.body.category },

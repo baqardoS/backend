@@ -1,4 +1,5 @@
 const express = require('express');
+const { protect, restrictTo } = require('../controllers/authController');
 const {
   getAllAuthors,
   createAuthor,
@@ -8,7 +9,13 @@ const {
 
 const router = express.Router();
 
-router.route('/').get(getAllAuthors).post(createAuthor);
-router.route('/:id').patch(updateAuthor).delete(deleteAuthor);
+router
+  .route('/')
+  .get(protect, getAllAuthors)
+  .post(protect, restrictTo('admin'), createAuthor);
+router
+  .route('/:id')
+  .patch(protect, restrictTo('admin'), updateAuthor)
+  .delete(protect, restrictTo('admin'), deleteAuthor);
 
 module.exports = router;

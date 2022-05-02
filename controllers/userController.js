@@ -18,6 +18,11 @@ exports.createUser = (req, res) => {
   });
 };
 
+exports.preventPasswordChange = (req, res, next) => {
+  if (req.body.password || req.body.passwordConfirm)
+    return next(new AppError('Changing password by admin is forbidden', 403));
+};
+
 exports.getAllUsers = factory.getAll(User);
 exports.getUser = factory.getOne(User);
 exports.updateUser = factory.updateOne(User);

@@ -11,23 +11,35 @@ const {
   aliasNewThisYear,
   alias5LongestBooks,
   getBooksStats,
-  setPublisherAdminLanguageCategory,
+  setPublisherAuthorLanguageCategory,
 } = require('../controllers/bookController');
 
 const router = express.Router();
 
-router.route('/published-this-year').get(aliasNewThisYear, getAllBooks);
-router.route('/top-5-longest').get(alias5LongestBooks, getAllBooks);
-router.route('/stats').get(getBooksStats);
+router
+  .route('/published-this-year')
+  .get(protect, aliasNewThisYear, getAllBooks);
+router.route('/top-5-longest').get(protect, alias5LongestBooks, getAllBooks);
+router.route('/stats').get(protect, getBooksStats);
 
 router
   .route('/')
   .get(protect, getAllBooks)
-  .post(setPublisherAdminLanguageCategory, createBook);
+  .post(
+    protect,
+    restrictTo('admin'),
+    setPublisherAuthorLanguageCategory,
+    createBook
+  );
 router
   .route('/:id')
-  .get(getBook)
-  .patch(setPublisherAdminLanguageCategory, updateBook)
+  .get(protect, getBook)
+  .patch(
+    protect,
+    restrictTo('admin'),
+    setPublisherAuthorLanguageCategory,
+    updateBook
+  )
   .delete(protect, restrictTo('admin'), deleteBook);
 
 module.exports = router;
