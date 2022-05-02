@@ -79,7 +79,7 @@ class APIFeatures {
     excludedFields.forEach((el) => delete queryObj[el]);
 
     //? Handle searching by checking if field contain value
-    const containFields = ['title', 'description'];
+    const containFields = ['title', 'description', 'name', 'email'];
     containFields.forEach((el) => {
       if (queryObj[el]) queryObj[el] = { $regex: queryObj[el], $options: 'i' };
     });

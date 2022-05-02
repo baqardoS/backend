@@ -12,6 +12,9 @@ const globalErrorHandler = require('./controllers/errorController');
 const bookRouter = require('./routes/bookRoutes');
 const userRouter = require('./routes/userRoutes');
 const categoryRouter = require('./routes/categoryRoutes');
+const languageRouter = require('./routes/languageRoutes');
+const authorRouter = require('./routes/authorController');
+const publisherRouter = require('./routes/publisherController');
 
 const app = express();
 
@@ -48,6 +51,9 @@ app.use((req, res, next) => {
 app.use('/api/v1/books', bookRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/categories', categoryRouter);
+app.use('/api/v1/languages', languageRouter);
+app.use('/api/v1/authors', authorRouter);
+app.use('/api/v1/publishers', publisherRouter);
 
 //? Handle unhandled routes
 app.all('*', (req, res, next) => {

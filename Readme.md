@@ -20,7 +20,7 @@
 - [x] Sending emails with token to change password
 - [x] Error handling
 - [x] Data sanitization
-- [ ] Separate data of Categories, Languages, Authors and Publishers
+- [x] Separate data of Categories, Languages, Authors and Publishers
 - [ ] Data validation
 - [ ] Production version
 - [ ] Documentation
