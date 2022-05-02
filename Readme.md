@@ -22,5 +22,5 @@
 - [x] Data sanitization
 - [x] Separate data of Categories, Languages, Authors and Publishers
 - [x] Data validation
-- [ ] Production version
+- [x] Production version
 - [ ] Documentation
