@@ -1,4 +1,7 @@
+const Author = require('../models/authorModel');
 const Category = require('../models/categoryModel');
+const Language = require('../models/languageModel');
+const Publisher = require('../models/publisherModel');
 
 class APIFeatures {
   constructor(query, queryString) {
@@ -15,9 +18,43 @@ class APIFeatures {
       (el) => !includedFields.includes(el) && delete queryObj[el]
     );
 
+    if ('author' in queryObj) {
+      const authorData = queryObj.author.split(' ');
+      let name = authorData[0];
+      const surname = authorData[0];
+      if (authorData.length > 1) name = authorData[0];
+      const authors = await Author.find({
+        $or: [
+          { name: { $in: [name, surname] } },
+          { surname: { $in: [name, surname] } },
+        ],
+      });
+      const ids = authors.map((author) => author._id);
+      queryObj.author = { $in: ids };
+    }
+
+    if ('publisher' in queryObj) {
+      const publishers = await Publisher.find({
+        name: { $regex: queryObj.publisher, $options: 'i' },
+      });
+      const ids = publishers.map((publisher) => publisher._id);
+      queryObj.publisher = { $in: ids };
+    }
+
     if ('category' in queryObj) {
-      const category = await Category.findOne({ name: queryObj.category });
-      queryObj.category = category._id;
+      const categories = await Category.find({
+        name: { $regex: queryObj.category, $options: 'i' },
+      });
+      const ids = categories.map((category) => category._id);
+      queryObj.category = { $in: ids };
+    }
+
+    if ('language' in queryObj) {
+      const languages = await Language.find({
+        name: { $regex: queryObj.language, $options: 'i' },
+      });
+      const ids = languages.map((language) => language._id);
+      queryObj.language = { $in: ids };
     }
 
     this.query = this.query.find(queryObj);

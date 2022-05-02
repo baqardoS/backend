@@ -30,7 +30,8 @@ const bookSchema = new mongoose.Schema(
       required: [true, 'A book must have a category'],
     },
     author: {
-      type: String,
+      type: mongoose.Schema.ObjectId,
+      ref: 'Author',
       required: [true, 'A book must have an author'],
     },
     pages: {
@@ -53,8 +54,14 @@ const bookSchema = new mongoose.Schema(
       default: Date.now(),
       select: false,
     },
-    publisher: String,
-    language: String,
+    publisher: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Publisher',
+    },
+    language: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Language',
+    },
     size: String,
     slug: String,
   },
@@ -72,12 +79,24 @@ bookSchema.pre('save', function (next) {
 });
 
 bookSchema.pre('find', function (next) {
-  this.populate({ path: 'category', select: 'name' });
+  this.populate({ path: 'category', select: '-_id name' })
+    .populate({
+      path: 'language',
+      select: '-_id name',
+    })
+    .populate({ path: 'author', select: '-_id name surname' })
+    .populate({ path: 'publisher', select: '-_id name' });
   next();
 });
 
 bookSchema.pre('findOne', function (next) {
-  this.populate({ path: 'category', select: 'name' });
+  this.populate({ path: 'category', select: '-_id name' })
+    .populate({
+      path: 'language',
+      select: '-_id name',
+    })
+    .populate({ path: 'author', select: '-_id name surname' })
+    .populate({ path: 'publisher', select: '-_id name' });
   next();
 });
 
