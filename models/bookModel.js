@@ -68,6 +68,7 @@ const bookSchema = new mongoose.Schema(
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+    selectPopulatedPaths: false,
   }
 );
 

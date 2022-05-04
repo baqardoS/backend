@@ -14,8 +14,8 @@ const bookRouter = require('./routes/bookRoutes');
 const userRouter = require('./routes/userRoutes');
 const categoryRouter = require('./routes/categoryRoutes');
 const languageRouter = require('./routes/languageRoutes');
-const authorRouter = require('./routes/authorController');
-const publisherRouter = require('./routes/publisherController');
+const authorRouter = require('./routes/authorRoutes');
+const publisherRouter = require('./routes/publisherRoutes');
 
 const app = express();
 

@@ -2,11 +2,13 @@ const Author = require('../models/authorModel');
 const Category = require('../models/categoryModel');
 const Language = require('../models/languageModel');
 const Publisher = require('../models/publisherModel');
+const AppError = require('./appError');
 
 class APIFeatures {
-  constructor(query, queryString) {
+  constructor(query, queryString, model) {
     this.query = query;
     this.queryString = queryString;
+    this.model = model;
   }
 
   async filterWithReference() {
@@ -107,7 +109,7 @@ class APIFeatures {
   limitFields() {
     if (this.queryString.fields) {
       const fields = this.queryString.fields.split(',').join(' ');
-      this.query = this.query.select(fields);
+      this.query = this.query.select(`${fields}`);
     } else {
       this.query = this.query.select('-__v');
     }
@@ -125,8 +127,8 @@ class APIFeatures {
 
     //? Check if page exists
     if (this.queryString.page) {
-      const numBooks = await this.query.countDocuments();
-      if (skip >= numBooks) throw new Error('This page does not exist');
+      const numBooks = await this.model.countDocuments();
+      if (skip >= numBooks) throw new AppError('This page does not exist', 404);
     }
 
     return this;

@@ -74,7 +74,8 @@ exports.getAll = (Model) =>
   catchAsync(async (req, res) => {
     let features = await new APIFeatures(
       Model.find(),
-      req.query
+      req.query,
+      Model
     ).filterWithReference();
     features = await features.filter().sort().limitFields().paginate();
 
