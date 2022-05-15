@@ -23,4 +23,5 @@
 - [x] Separate data of Categories, Languages, Authors and Publishers
 - [x] Data validation
 - [x] Production version
-- [ ] Documentation
+- [x] Documentation
+- [ ] Services
