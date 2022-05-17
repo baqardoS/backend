@@ -21,6 +21,7 @@ exports.createUser = (req, res) => {
 exports.preventPasswordChange = (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm)
     return next(new AppError('Changing password by admin is forbidden', 403));
+  next();
 };
 
 exports.getAllUsers = catchAsync(async (req, res) => {
