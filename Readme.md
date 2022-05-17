@@ -24,4 +24,4 @@
 - [x] Data validation
 - [x] Production version
 - [x] Documentation
-- [ ] Services
+- [x] Services
