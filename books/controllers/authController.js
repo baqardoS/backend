@@ -12,7 +12,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   try {
     await axios.get(
-      `http://127.0.0.1:3001/api/v1/users/authenticateUser/${req.cookies.jwt}`
+      `http://127.0.0.1:3001/users/authenticateUser/${req.cookies.jwt}`
     );
   } catch (err) {
     next(new AppError(err.response.data.message, err.response.status));

@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 
@@ -27,6 +28,7 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour!',
 });
 
+app.use(cors());
 //? Secure HTTP headers
 app.use(helmet());
 //? Limit requests from same IP
@@ -49,11 +51,11 @@ app.use((req, res, next) => {
 });
 
 //? Routes
-app.use('/api/v1/books', bookRouter);
-app.use('/api/v1/categories', categoryRouter);
-app.use('/api/v1/languages', languageRouter);
-app.use('/api/v1/authors', authorRouter);
-app.use('/api/v1/publishers', publisherRouter);
+app.use('/books', bookRouter);
+app.use('/categories', categoryRouter);
+app.use('/languages', languageRouter);
+app.use('/authors', authorRouter);
+app.use('/publishers', publisherRouter);
 
 //? Handle unhandled routes
 app.all('*', (req, res, next) => {
