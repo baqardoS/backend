@@ -46,7 +46,7 @@ exports.login = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email }).select('+password +active');
 
   if (!user.active)
-    return next(new AppError("Incorrect email or password", 401));
+    return next(new AppError('Incorrect email or password', 401));
 
   if (!user || !(await user.correctPassword(password, user.password)))
     return next(new AppError('Incorrect email or password', 401));
@@ -75,7 +75,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   const decodedData = jwt.verify(token, process.env.JWT_SECRET);
 
   //? Check if user still exists
-  const user = await User.findById(decodedData.id).select("+active");
+  const user = await User.findById(decodedData.id).select('+active');
   if (!user)
     return next(
       new AppError('User associated with this token does no longer exist.', 401)
@@ -83,7 +83,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   if (!user.active)
     return next(
-      new AppError("You are not logged in! Please login to get access.", 401)
+      new AppError('You are not logged in! Please login to get access.', 401)
     );
 
   //? Check if user changed password after token was issued
@@ -110,7 +110,7 @@ exports.authenticateUser = catchAsync(async (req, res, next) => {
   const decodedData = jwt.verify(token, process.env.JWT_SECRET);
 
   //? Check if user still exists
-  const user = await User.findById(decodedData.id);
+  const user = await User.findById(decodedData.id).select('+role');
   if (!user)
     return next(
       new AppError('User associated with this token does no longer exist.', 401)

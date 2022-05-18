@@ -11,9 +11,10 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
 
   try {
-    await axios.get(
+    const response = await axios.get(
       `http://127.0.0.1:3001/users/authenticateUser/${req.cookies.jwt}`
     );
+    req.user = response.data.data.user;
   } catch (err) {
     next(new AppError(err.response.data.message, err.response.status));
   }
