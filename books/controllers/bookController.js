@@ -29,15 +29,17 @@ exports.deleteBook = factory.deleteOne(Book);
 
 exports.setPublisherAuthorLanguageCategory = catchAsync(
   async (req, res, next) => {
-    const category = await Category.findOneAndUpdate(
-      { name: req.body.category },
-      { name: req.body.category },
-      {
-        new: true,
-        upsert: true,
-      }
-    );
-    req.body.category = category._id;
+    if (req.body.category) {
+      const category = await Category.findOneAndUpdate(
+        { name: req.body.category },
+        { name: req.body.category },
+        {
+          new: true,
+          upsert: true,
+        }
+      );
+      req.body.category = category._id;
+    }
 
     if (req.body.language) {
       const language = await Language.findOneAndUpdate(
@@ -63,21 +65,23 @@ exports.setPublisherAuthorLanguageCategory = catchAsync(
       req.body.publisher = publisher._id;
     }
 
-    const author = await Author.findOneAndUpdate(
-      {
-        name: req.body.author.split(' ')[0],
-        surname: req.body.author.split(' ')[1],
-      },
-      {
-        name: req.body.author.split(' ')[0],
-        surname: req.body.author.split(' ')[1],
-      },
-      {
-        new: true,
-        upsert: true,
-      }
-    );
-    req.body.author = author._id;
+    if (req.body.author) {
+      const author = await Author.findOneAndUpdate(
+        {
+          name: req.body.author.split(' ')[0],
+          surname: req.body.author.split(' ')[1],
+        },
+        {
+          name: req.body.author.split(' ')[0],
+          surname: req.body.author.split(' ')[1],
+        },
+        {
+          new: true,
+          upsert: true,
+        }
+      );
+      req.body.author = author._id;
+    }
 
     next();
   }
