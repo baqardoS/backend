@@ -67,6 +67,19 @@ exports.updateUser = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.becomeAdministrator = catchAsync(async (req, res, next) => {
+  if (process.env.NODE_ENV === 'production') next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+  const user = await User.findByIdAndUpdate(req.user.id, {role:"admin"}, {
+    new: true,
+    runValidators: true,
+  }).select('-_id name email role');
+
+  res.status(200).json({
+    status: 'success',
+    data: { user },
+  });
+});
+
 exports.deleteUser = catchAsync(async (req, res, next) => {
   const user = await User.findByIdAndDelete(req.params.id);
 

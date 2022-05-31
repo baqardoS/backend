@@ -60,7 +60,7 @@ module.exports = (err, req, res, next) => {
   else if (process.env.NODE_ENV === 'production') {
     let error = JSON.parse(JSON.stringify(err));
     error.message = err.message;
-    
+
     if (err.name === 'CastError') error = handleCastErrorDB(err);
     if (err.name === 'ValidationError') error = handleValidationErrorDB(err);
     if (err.name === 'JsonWebTokenError') error = handleJWTError();

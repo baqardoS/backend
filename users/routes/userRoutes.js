@@ -10,6 +10,7 @@ const {
   deleteMe,
   getMe,
   preventPasswordChange,
+  becomeAdministrator
 } = require('../controllers/userController');
 
 const {
@@ -36,6 +37,7 @@ router.post('/forgotPassword', forgotPassword);
 router.patch('/resetPassword/:token', resetPassword);
 
 router.patch('/updateMyPassword', protect, updatePassword);
+router.patch('/becomeAdministrator', protect, becomeAdministrator);
 router.get('/me', protect, getMe);
 router.patch('/updateMe', protect, updateMe);
 router.delete('/deleteMe', protect, deleteMe);

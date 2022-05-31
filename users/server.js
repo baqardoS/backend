@@ -13,7 +13,9 @@ dotenv.config({ path: './config.env' });
 
 const app = require('./app');
 
-const DB = process.env.DATABASE.replace(
+const DB = process.env.DATABASE 
+
+if (process.env.NODE_ENV === 'production') DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
